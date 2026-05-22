@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Emotion Detection System</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🎓</span>
+        <div>
+          <h1>Student Emotion Detection System</h1>
+          <p>Real-time facial emotion recognition for classroom engagement</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="status-badge" class="badge badge-live">● LIVE</span>
+        <button class="btn btn-outline" onclick="exportLog()">⬇ Export Log</button>
+        <button class="btn btn-danger"  onclick="clearLog()">🗑 Clear Log</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main layout ── -->
+  <main class="main">
+
+    <!-- Left: Camera feed -->
+    <section class="card camera-card">
+      <div class="card-header">
+        <h2>📷 Live Camera Feed</h2>
+        <span id="cam-status" class="badge badge-live">Active</span>
+      </div>
+      <div class="video-wrapper">
+        <img id="video-feed" src="/video_feed" alt="Live camera feed" />
+        <div class="video-overlay" id="no-face-overlay" style="display:none;">
+          <span>😶 No face detected</span>
+        </div>
+      </div>
+      <div class="camera-controls">
+        <button class="btn btn-primary" onclick="startCamera()">▶ Start</button>
+        <button class="btn btn-secondary" onclick="stopCamera()">⏹ Stop</button>
+      </div>
+    </section>
+
+    <!-- Right: Info panels -->
+    <aside class="sidebar">
+
+      <!-- Current emotion -->
+      <div class="card emotion-card">
+        <div class="card-header"><h2>😊 Current Emotion</h2></div>
+        <div class="emotion-display">
+          <div id="emotion-emoji" class="emotion-emoji">😐</div>
+          <div id="emotion-label" class="emotion-label">Initializing…</div>
+          <div class="confidence-bar-wrap">
+            <div class="confidence-bar-track">
+              <div id="confidence-bar" class="confidence-bar" style="width:0%"></div>
+            </div>
+            <span id="confidence-text" class="confidence-text">0%</span>
+          </div>
+        </div>
+
+        <!-- Score breakdown -->
+        <div class="score-grid" id="score-grid"></div>
+      </div>
+
+      <!-- Session summary -->
+      <div class="card summary-card">
+        <div class="card-header">
+          <h2>📊 Session Summary</h2>
+          <span id="total-detections" class="badge badge-neutral">0 detections</span>
+        </div>
+        <div id="summary-bars"></div>
+      </div>
+
+      <!-- Recent log -->
+      <div class="card log-card">
+        <div class="card-header"><h2>🕒 Recent Log</h2></div>
+        <div id="log-list" class="log-list"></div>
+      </div>
+
+    </aside>
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <p>Student Emotion Detection System &nbsp;|&nbsp; Python · Flask · OpenCV · DeepFace &nbsp;|&nbsp; 2026</p>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
