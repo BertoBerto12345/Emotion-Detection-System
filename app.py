@@ -20,7 +20,7 @@ CORS(app)
 MODEL_DIR  = os.path.join(os.path.dirname(__file__), "model")
 ONNX_PATH  = os.path.join(MODEL_DIR, "emotion-ferplus-8.onnx")
 ONNX_URL   = (
-    "https://github.com/onnx/models/raw/main/validated/"
+    "https://github.com/onnx/models/raw/refs/heads/main/validated/"
     "vision/body_analysis/emotion_ferplus/model/emotion-ferplus-8.onnx"
 )
 
@@ -62,8 +62,15 @@ def load_models():
     if not os.path.exists(ONNX_PATH):
         print("[INFO] Downloading emotion model...")
         try:
+            opener = urllib.request.build_opener()
+            opener.addheaders = [("User-Agent", "Mozilla/5.0")]
+            urllib.request.install_opener(opener)
             urllib.request.urlretrieve(ONNX_URL, ONNX_PATH)
-            print("[INFO] Model downloaded.")
+            size = os.path.getsize(ONNX_PATH)
+            print(f"[INFO] Model downloaded ({size} bytes).")
+            if size < 100000:
+                os.remove(ONNX_PATH)
+                print("[WARN] Downloaded file too small, removing.")
         except Exception as e:
             print(f"[WARN] Download failed: {e}")
 
@@ -227,12 +234,15 @@ def export_log():
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 
+# ── Auto-load on import (needed for gunicorn) ─────────────────────────────────
+load_log()
+load_models()
+
 if __name__ == "__main__":
-    load_log()
-    load_models()
     port = int(os.environ.get("PORT", 5000))
     print("=" * 55)
     print("  Student Emotion Detection System")
     print(f"  Open http://127.0.0.1:{port} in your browser")
     print("=" * 55)
     app.run(debug=False, threaded=True, host="0.0.0.0", port=port)
+
