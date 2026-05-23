@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="header-actions">
-        <span id="status-badge" class="badge badge-live">● LIVE</span>
+        <span id="status-badge" class="badge badge-offline">● OFFLINE</span>
         <button class="btn btn-outline" onclick="exportLog()">⬇ Export Log</button>
         <button class="btn btn-danger"  onclick="clearLog()">🗑 Clear Log</button>
       </div>
@@ -35,17 +35,19 @@
     <section class="card camera-card">
       <div class="card-header">
         <h2>📷 Live Camera Feed</h2>
-        <span id="cam-status" class="badge badge-live">Active</span>
+        <span id="cam-status" class="badge badge-offline">Stopped</span>
       </div>
       <div class="video-wrapper">
-        <img id="video-feed" src="/video_feed" alt="Live camera feed" />
-        <div class="video-overlay" id="no-face-overlay" style="display:none;">
-          <span>😶 No face detected</span>
+        <!-- Browser webcam via getUserMedia -->
+        <video id="video" autoplay playsinline muted></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <div class="video-overlay" id="cam-overlay">
+          <span>📷 Click Start to enable camera</span>
         </div>
       </div>
       <div class="camera-controls">
-        <button class="btn btn-primary" onclick="startCamera()">▶ Start</button>
-        <button class="btn btn-secondary" onclick="stopCamera()">⏹ Stop</button>
+        <button class="btn btn-primary"   id="btn-start" onclick="startCamera()">▶ Start</button>
+        <button class="btn btn-secondary" id="btn-stop"  onclick="stopCamera()" disabled>⏹ Stop</button>
       </div>
     </section>
 
@@ -57,7 +59,7 @@
         <div class="card-header"><h2>😊 Current Emotion</h2></div>
         <div class="emotion-display">
           <div id="emotion-emoji" class="emotion-emoji">😐</div>
-          <div id="emotion-label" class="emotion-label">Initializing…</div>
+          <div id="emotion-label" class="emotion-label">Waiting…</div>
           <div class="confidence-bar-wrap">
             <div class="confidence-bar-track">
               <div id="confidence-bar" class="confidence-bar" style="width:0%"></div>
@@ -65,8 +67,6 @@
             <span id="confidence-text" class="confidence-text">0%</span>
           </div>
         </div>
-
-        <!-- Score breakdown -->
         <div class="score-grid" id="score-grid"></div>
       </div>
 
@@ -90,7 +90,7 @@
 
   <!-- ── Footer ── -->
   <footer class="footer">
-    <p>Student Emotion Detection System &nbsp;|&nbsp; Python · Flask · OpenCV · DeepFace &nbsp;|&nbsp; 2026</p>
+    <p>Student Emotion Detection System &nbsp;|&nbsp; Python · Flask · OpenCV · FER+ &nbsp;|&nbsp; 2026</p>
   </footer>
 
   <script src="/static/js/main.js"></script>
